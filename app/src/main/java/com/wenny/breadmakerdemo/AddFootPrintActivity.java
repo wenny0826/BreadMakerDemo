@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPicker;
 
 /**
@@ -47,18 +50,22 @@ public class AddFootPrintActivity extends AppCompatActivity implements View.OnCl
 
     private DateTimePicker dateTimePicker;
     private String describe;
+
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_footprint);
+        ButterKnife.bind(this);
         init();
     }
+
     protected void init() {
         context = this;
         Intent intent = getIntent();
         dateTimePicker = new DateTimePicker(context);
         position = intent.getIntExtra("position", -1);
         footPrintEntity = (FootPrintEntity) intent.getSerializableExtra("footPrintEntity");
+        Log.d("print", "init: " + footPrintEntity.toString());
         tv_time.setText(footPrintEntity.getImgTime());
         describe = footPrintEntity.getDescribe();
         if (!TextUtils.isEmpty(describe)) {
